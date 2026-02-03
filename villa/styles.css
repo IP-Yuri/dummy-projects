@@ -387,7 +387,7 @@ body {
     padding: 0 var(--spacing-container);
     
     /* CRITICAL FIX: Increase bottom padding to make room for the hanging text */
-    padding-bottom: 4rem; 
+    padding-bottom: 6rem; 
     
     overflow-x: auto; 
     scroll-snap-type: x mandatory; 
