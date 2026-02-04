@@ -181,7 +181,7 @@ body {
     .hero-split {
         grid-template-columns: 1fr;
         /* Stack them vertically */
-        grid-template-rows: 50vh 50vh;
+        grid-template-rows: 45vh 55vh;
         /* Image takes top 60%, Text takes bottom */
     }
 
@@ -218,7 +218,7 @@ body {
     }
     .hero-footer-row {
         display: flex;
-        padding-top: 4rem;
+        padding-top: 1rem;
         justify-content: left;
         gap: 1rem;
     }   
