@@ -213,6 +213,8 @@ body {
         position: relative;
         align-self: flex-end;
         bottom: 0;
+        padding: 0.7rem 1.2rem;
+        font-size: 0.7rem;
     }
     .hero-footer-row {
         display: flex;
