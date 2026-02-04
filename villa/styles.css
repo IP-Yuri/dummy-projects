@@ -1,564 +1,646 @@
-/* =========================================
-   1. CONFIGURATION (Design System)
-   ========================================= */
+/* 1. THE IMPORTS */
+/* Playfair Display (The "Vogue" Font) & Inter (The Clean Font) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap');
+
 :root {
-    /* Colors */
-    --color-bg: #F5F5F0;
-    --color-text: #1C1C1C;
-    --color-accent: #D4AF37; /* Gold (Hero/Nav) */
-    --color-highlight: #2563EB; /* Royal Blue (Overview Section) */
-    --color-white: #FFFFFF;
-    --color-overlay: rgba(0, 0, 0, 0.5);
+    /* PALETTE: "Gallery Cream" */
+    --color-bg: #F9F9F7;
+    /* Warm Paper White */
+    --color-text: #1A1A1A;
+    /* Sharp Charcoal Ink */
+    --color-accent: #2C3E50;
+    /* Swiss Navy (Subtle) */
+    --color-soft: #888888;
+    /* Grey text for small details */
 
-    /* Typography */
+    /* FONTS */
     --font-serif: 'Playfair Display', serif;
-    --font-sans: 'Geist', sans-serif;
+    --font-sans: 'Inter', sans-serif;
 
-    /* Spacing & Motion */
-    --spacing-container: 2rem;
-    --transition-speed: 0.7s;
-    --transition-curve: cubic-bezier(0.77, 0, 0.175, 1);
+    /* SPACING */
+    --spacing-container: 6vw;
 }
 
-/* =========================================
-   2. GLOBAL RESET
-   ========================================= */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* 2. THE RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
 
 body {
     background-color: var(--color-bg);
     color: var(--color-text);
     font-family: var(--font-sans);
-    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    overflow-x: hidden;
+    /* Prevent horizontal scroll glitches */
 }
 
-/* =========================================
-   3. NAVIGATION
-   ========================================= */
-.main-nav {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    padding: 1.5rem var(--spacing-container);
+/* 3. THE SPLIT HERO ENGINE */
+.hero-split {
+    /* Occupy the full screen height */
+    min-height: 100vh;
+    display: grid;
+    /* Desktop Default: 50% Text | 50% Image */
+    grid-template-columns: 1fr 1fr;
+}
+
+/* The Left Side (Narrative) */
+.hero-text-side {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 50;
-    mix-blend-mode: difference;
-    color: var(--color-white);
-}
-
-.brand-logo {
-    font-family: var(--font-serif);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-size: 1.25rem;
-}
-
-.inquire-btn {
-    background: none;
-    border: none;
-    color: inherit;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.inquire-btn:hover { color: var(--color-accent); }
-
-/* =========================================
-   4. HERO SECTION (Cinematic Animation)
-   ========================================= */
-.hero {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
+    /* Center text vertically */
+    padding: 0 var(--spacing-container);
+    /* Breathing room on sides */
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    /* A very faint divider line */
+}
+
+/* The Right Side (Visual) */
+.hero-image-side {
+    position: relative;
+    height: 100%;
     overflow: hidden;
 }
 
-.hero-canvas { 
-    position: absolute; 
-    inset: 0; 
-    z-index: 0; 
-}
-
-.hero-overlay {
-    position: absolute; 
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6));
-    z-index: 1;
-}
-
-.cinematic-image {
-    width: 100%; height: 100%;
+.hero-image-side img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    transform: scale(1);
-    animation: slowZoom 20s ease-out infinite alternate;
+    /* Ensures image fills the box without stretching */
+    display: block;
 }
 
-@keyframes slowZoom {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.15); }
+/* HERO TYPOGRAPHY */
+.label-small {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    /* Wide spacing = Luxury */
+    color: var(--color-soft);
+    margin-bottom: 2rem;
+    font-weight: 500;
 }
 
-.hero-content {
-    position: relative; z-index: 10;
-    text-align: center; color: var(--color-white);
-    padding: 0 1rem;
-}
-
-.subtitle {
-    font-size: 0.75rem; letter-spacing: 0.3em;
-    text-transform: uppercase; margin-bottom: 2rem;
-    opacity: 0;
-}
-
-.title {
+.headline-serif {
     font-family: var(--font-serif);
-    font-size: 3.5rem; font-style: italic;
-    line-height: 1.1; margin-bottom: 2rem;
-    opacity: 0;
+    font-size: 4.5vw;
+    /* Scales with screen size */
+    line-height: 1.1;
+    font-weight: 400;
+    /* Regular weight looks more elegant than Bold */
+    margin-bottom: 2rem;
+    color: var(--color-text);
 }
 
-@media (min-width: 768px) { .title { font-size: 6.5rem; } }
-
-.vertical-line {
-    width: 1px; height: 60px;
-    background-color: rgba(255, 255, 255, 0.5);
-    margin: 0 auto; opacity: 0;
+.italic {
+    font-style: italic;
+    font-weight: 400;
 }
-/* =========================================
-   THE INFINITE SLIDESHOW
-   ========================================= */
-.slide {
+
+.hero-desc {
+    max-width: 400px;
+    color: #444;
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
+}
+
+.btn-text {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    transition: color 0.3s ease;
+    background-color: #1A1A1A;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    display: inline-block;
+}
+
+.btn-text:hover {
+    color: #989595c4;
+    text-decoration: none;
+}
+
+/* TOP LEFT: The Logo */
+.hero-logo {
     position: absolute;
+    top: 3rem;
+    left: var(--spacing-container);
+    z-index: 10;
+}
+
+.logo-text {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    /* Tight tracking for modern look */
+    color: var(--color-text);
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+/* BOTTOM AREA: Philosophy & Contact */
+.hero-footer-row {
+    position: absolute;
+    bottom: 3rem;
+    left: var(--spacing-container);
+    /* Width = Full width minus padding on both sides */
+    width: calc(100% - (var(--spacing-container) * 2));
+
+    display: flex;
+    justify-content: space-between;
+    /* Pushes Philosophy left, Contact right */
+    align-items: flex-end;
+
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-soft);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    /* Optional: The "Anchor Line" */
+    padding-top: 1.5rem;
+}
+
+.hero-contact-link {
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.hero-contact-link:hover {
+    border-color: var(--color-text);
+}
+
+/* MOBILE RESPONSIVENESS */
+@media (max-width: 900px) {
+    .hero-split {
+        grid-template-columns: 1fr;
+        /* Stack them vertically */
+        grid-template-rows: 60vh 40vh;
+        /* Image takes top 60%, Text takes bottom */
+    }
+
+    /* Flip the order: Image First, Text Second on mobile */
+    .hero-image-side {
+        order: 1;
+    }
+
+    .hero-text-side {
+        order: 2;
+        padding: 4rem 2rem;
+    }
+
+    .headline-serif {
+        font-size: 3rem;
+    }
+}
+
+/* =========================================
+   ZONE 2: THE EDITORIAL (The Story)
+   ========================================= */
+.editorial-section {
+    padding: 5rem var(--spacing-container);
+    /* Huge vertical breathing room */
+    background-color: rgb(99, 80, 71);
+    /* Keep the Cream flow */
+    display: flex;
+    justify-content: center;
+    /* Center the column */
+}
+
+.editorial-column {
+    max-width: 720px;
+    /* Constrain width for optimal reading (The "Book" feel) */
+    width: 100%;
+}
+
+/* The "Chapter Marker" (e.g., "01 — THE VISION") */
+.chapter-marker {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: whitesmoke;
+    /* Swiss Navy */
+    margin-bottom: 2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    /* A thin separator line */
+    padding-top: 2rem;
+    width: 50px;
+    /* The line is short, not full width */
+}
+
+/* The Title */
+.editorial-title {
+    font-family: var(--font-serif);
+    font-size: 3rem;
+    line-height: 1.2;
+    color: var(--color-text);
+    margin-bottom: 3rem;
+    font-weight: 400;
+}
+
+/* The "Lead" Paragraph (The First Paragraph is always bigger) */
+.editorial-lead {
+    font-family: var(--font-serif);
+    /* Serif for the lead feels traditional */
+    font-size: 1.5rem;
+    line-height: 1.5;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+/* The Body Text */
+.editorial-body {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.8;
+    /* Loose leading for easy reading */
+    color: rgb(116, 113, 113);
+    margin-bottom: 2rem;
+}
+
+/* =========================================
+   ZONE 3: THE SPECIFICATIONS (The Receipt)
+   ========================================= */
+.specs-section {
+    padding: 0 var(--spacing-container) 4rem;
+    /* Bottom padding for space */
+    background-color: #D8D1CC;
+}
+
+.specs-grid {
+    display: grid;
+    /* Mobile: 1 Column */
+    grid-template-columns: 1fr;
+    /* The gap becomes the breathing room between rows */
+    row-gap: 2rem;
+    column-gap: 4rem;
+}
+
+@media (min-width: 900px) {
+    .specs-grid {
+        /* Desktop: 3 Columns (Elegant & Wide) */
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.spec-item {
+    /* The "Line" - subtle and thin */
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.spec-label {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-soft);
+    /* Grey */
+}
+
+.spec-value {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    color: var(--color-text);
+    /* Sharp Black */
+}
+
+/* The Download Link (Styled as text, not a button) */
+.blueprint-link {
+    margin-top: 4rem;
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-accent);
+    /* Underlined */
+    padding-bottom: 0.2rem;
+    transition: opacity 0.3s;
+}
+
+.blueprint-link:hover {
+    opacity: 0.6;
+}
+
+/* =========================================
+   ZONE 4: THE MUSEUM GALLERY
+   ========================================= */
+.gallery-section {
+    background-color: #8C7F76;
+    padding-bottom: 4rem;
+    overflow: hidden;
+    /* Hide the scrollbar from the main page */
+}
+
+.gallery-header {
+    padding: 0 var(--spacing-container);
+    margin-bottom: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+/* The "Track" - Where the scrolling happens */
+.gallery-track {
+    display: flex;
+    gap: 4vw;
+    /* Wide gap between paintings */
+    padding: 0 var(--spacing-container);
+    /* Start/End padding matches the page */
+
+    overflow-x: auto;
+    /* Allow horizontal scroll */
+    scroll-snap-type: x mandatory;
+    /* The Magnet Effect */
+
+    /* Hide Scrollbars */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE */
+    padding-bottom: 2rem;
+    /* Safety space */
+}
+
+.gallery-track::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
+}
+
+.art-piece {
+    /* Fixed width for consistency */
+    flex: 0 0 30vw;
+    /* Desktop: Take up 30% of screen width */
+    scroll-snap-align: center;
+    /* Snap to center when scrolling stops */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* On Mobile, make them wider so they are easier to see */
+@media (max-width: 900px) {
+    .art-piece {
+        flex: 0 0 80vw;
+        /* Mobile: Take up 80% of screen */
+        scroll-snap-align: start;
+        /* Snap to left edge */
+    }
+}
+
+.art-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
+    /* Slow, elegant zoom on hover */
+}
+
+.art-piece:hover .art-image-container img {
+    transform: scale(1.05);
+    /* Very subtle movement */
+}
+
+.art-caption {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text);
+}
+
+/* =========================================
+   ZONE 5: THE CONCIERGE (Footer)
+   ========================================= */
+.concierge-section {
+    padding: 4rem var(--spacing-container) 4rem;
+    /* Top padding is huge */
+    background-color: #544439;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    /* Very subtle separation */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Center everything */
+    text-align: center;
+}
+
+.concierge-label {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-soft);
+    margin-bottom: 2rem;
+}
+
+.concierge-title {
+    font-family: var(--font-serif);
+    font-size: 3.5rem;
+    /* Massive */
+    color: var(--color-text);
+    margin-bottom: 3rem;
+    max-width: 600px;
+    line-height: 1.1;
+}
+
+/* The "Invitation Card" Button */
+.btn-concierge {
+    display: inline-block;
+    padding: 1.2rem 3rem;
+    background-color: rgb(105, 99, 99);
+    /* Swiss Navy */
+    color: white;
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    transition: all 0.3s ease;
+    border: 1px solid var(--color-accent);
+}
+
+.btn-concierge:hover {
+    background-color: transparent;
+    color: var(--color-accent);
+}
+
+/* The Footer Bottom (Copyright, etc.) */
+.footer-bottom {
+    margin-top: 8rem;
+    /* Distance from the button */
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 2rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--color-soft);
+    letter-spacing: 0.05em;
+}
+
+.footer-links a {
+    color: var(--color-text);
+    text-decoration: none;
+    margin-left: 2rem;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 900px) {
+    .concierge-title {
+        font-size: 2.5rem;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .footer-links a {
+        margin: 0 1rem;
+    }
+}
+
+/* MOBILE COMPACT MODE */
+@media (max-width: 900px) {
+
+    .editorial-section,
+    .specs-section,
+    .gallery-section,
+    .concierge-section {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+
+    .hero-split {
+        min-height: auto;
+        /* Allow hero to be smaller on phone */
+    }
+}
+
+/* =========================================
+   THE MODAL ENGINE
+   ========================================= */
+
+/* 1. The Dark Backdrop */
+.modal-overlay {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    opacity: 0; /* Hidden by default */
-    transform: scale(1);
-    will-change: opacity, transform;
-}
+    background-color: rgba(26, 26, 26, 0.9);
+    /* Dark Charcoal, 90% opacity */
+    backdrop-filter: blur(5px);
+    /* Blurs the website behind it */
+    z-index: 1000;
+    /* Sit on top of everything */
 
-/* LOGIC: 
-   Total Cycle = 18 seconds.
-   3 Images.
-   Each image gets 6 seconds (33%).
-*/
+    /* Animation State: Hidden */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
 
-/* Image 1 Animation */
-.slide-1 {
-    animation: slideCycle 18s infinite;
-    animation-delay: 0s; /* Starts immediately */
-}
-
-/* Image 2 Animation */
-.slide-2 {
-    animation: slideCycle 18s infinite;
-    animation-delay: 6s; /* Starts after 6s */
-}
-
-/* Image 3 Animation */
-.slide-3 {
-    animation: slideCycle 18s infinite;
-    animation-delay: 12s; /* Starts after 12s */
-}
-
-/* THE KEYFRAMES (The Heartbeat) */
-@keyframes slideCycle {
-    0% {
-        opacity: 0;
-        transform: scale(1);
-    }
-    5% {
-        opacity: 1; /* Fade In fast */
-    }
-    33% {
-        opacity: 1; /* Stay visible */
-        transform: scale(1.1); /* Zoom in slowly */
-    }
-    38% {
-        opacity: 0; /* Fade Out */
-    }
-    100% {
-        opacity: 0; /* Stay hidden */
-    }
-}
-
-/* Scroll Indicator */
-.scroll-indicator {
-    position: absolute; bottom: 2rem;
-    left: 50%; transform: translateX(-50%);
-    z-index: 10;
-    display: flex; flex-direction: column; align-items: center;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.65rem; letter-spacing: 0.2em;
-    text-transform: uppercase; opacity: 0;
-}
-
-.scroll-line {
-    width: 1px; height: 40px;
-    background-color: rgba(255, 255, 255, 0.3);
-    margin-top: 1rem; position: relative; overflow: hidden;
-}
-
-.scroll-line::after {
-    content: ''; position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-color: var(--color-accent);
-    animation: scrollDrop 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-}
-
-@keyframes scrollDrop {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(100%); }
-}
-
-/* Entrance Animations */
-.fade-in-up { animation: fadeInUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
-.delay-1 { animation-delay: 0.2s; }
-.delay-2 { animation-delay: 0.4s; }
-.delay-3 { animation-delay: 0.8s; }
-.delay-4 { animation-delay: 1.2s; }
-
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* =========================================
-   5. OVERVIEW SECTION (Refined Text/Data)
-   ========================================= */
-.overview {
-    padding: 8rem var(--spacing-container);
-    background-color: var(--color-bg);
-}
-
-.overview-grid {
-    max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr;
-    gap: 4rem;
-}
-
-@media (min-width: 900px) {
-    .overview-grid {
-        grid-template-columns: 1.5fr 1fr; /* Text Left, Data Right */
-        gap: 6rem;
-    }
-}
-
-/* Narrative Styles */
-.narrative-title {
-    font-family: var(--font-serif);
-    font-size: 3rem; line-height: 1.1;
-    margin-bottom: 2rem; color: var(--color-text);
-}
-
-.highlight-italic {
-    color: var(--color-highlight); /* Blue */
-    font-style: italic;
-}
-
-.overview-text p {
-    font-size: 1rem; line-height: 1.8;
-    color: #555; margin-bottom: 1.5rem;
-}
-
-/* Download Block */
-.download-block {
-    margin-top: 3rem; 
-    width: 100%;
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center;
-    border-top: 1px solid rgba(0,0,0,0.1); 
-    padding-top: 2rem;
-}
-
-.file-info { 
-    display: flex; 
-    flex-direction: column; 
-}
-.file-info strong {
-    font-size: 0.75rem; 
-    color: var(--color-highlight);
-    letter-spacing: 0.1em; 
-    text-transform: uppercase;
-}
-.file-info span { 
-    font-size: 0.7rem; 
-    color: #999; 
-}
-
-.download-btn {
-    background-color: var(--color-highlight); /* Blue */
-    color: white;
-    padding: 1rem 2rem;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    
-    /* NEW RULES FOR LINKS */
-    text-decoration: none; /* Removes the underline */
-    display: inline-flex;  /* Makes it behave like a button box */
-    align-items: center;   /* Vertically centers text */
+    display: flex;
     justify-content: center;
+    align-items: center;
 }
 
-.download-btn:hover {
-    background-color: #1d4ed8;
+/* Animation State: Visible (Added by JS) */
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
 }
 
-/* Specs Styles */
-.section-label {
-    font-size: 1.25rem; 
-    font-family: var(--font-sans);
-    font-weight: 600; 
-    margin-bottom: 2rem; 
-    color: var(--color-text);
-}
-
-.specs-matrix {
-    display: grid; 
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem 1rem; margin-bottom: 3rem;
-    border-top: 1px solid rgba(0,0,0,0.1); padding-top: 2rem;
-}
-
-.spec-item { 
-    display: flex; 
-    flex-direction: column; 
-}
-.spec-item .label {
-    font-size: 0.75rem; 
-    color: #666; 
-    margin-bottom: 0.5rem;
-}
-.spec-item .value {
-    font-family: var(--font-sans); 
-    font-weight: 600;
-    font-size: 1rem; 
-    color: var(--color-text);
-}
-
-/* Map */
-.map-container {
-    position: relative; 
-    border-radius: 12px;
-    overflow: hidden; height: 180px; width: 100%;
-}
-.map-container img {
-    width: 100%; height: 100%;
-    object-fit: cover; filter: grayscale(0.2);
-}
-.map-label {
-    position: absolute;     
-    bottom: 1rem; 
-    left: 1rem;
-    background: rgba(255,255,255,0.9); 
-    padding: 0.5rem 1rem;
-    border-radius: 20px; 
-    font-size: 0.7rem; 
-    font-weight: 600;
-}
-
-/* =========================================
-   6. MUSEUM GALLERY (Horizontal Scroll)
-   ========================================= */
-.museum-gallery {
-    padding: 4rem 0;
+/* 2. The Paper Card */
+.modal-card {
     background-color: var(--color-bg);
-    overflow: hidden; /* Hide the messy scrollbar */
-}
-
-.gallery-track {
-    display: flex;
-    gap: 2rem;
-    padding: 0 var(--spacing-container);
-    
-    /* CRITICAL FIX: Increase bottom padding to make room for the hanging text */
-    padding-bottom: 6rem; 
-    
-    overflow-x: auto; 
-    scroll-snap-type: x mandatory; 
-    
-    /* Hide scrollbars */
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-/* Hide scrollbar logic */
-.gallery-track::-webkit-scrollbar {
-    display: none;
-}
-
-.art-card {
-    min-width: 80vw; /* Mobile: Occupy 80% of screen */
-    height: 60vh;
-    position: relative;
-    scroll-snap-align: center; /* Snap to center of screen */
-    transition: transform 0.5s ease;
-}
-.art-card:hover {
-    transform: scale(1.05); /* Slight zoom on hover */
-    transition: transform 0.6s ease;
-    cursor: pointer;
-    z-index: 1;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-
-}   
-
-@media (min-width: 768px) {
-    .art-card {
-        min-width: 400px; /* Desktop: Fixed width cards */
-        height: 500px;
-    }
-}
-
-.art-card img {
+    /* Cream */
+    padding: 4rem;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(20%); /* Artistic touch */
-    transition: filter 0.5s;
-}
-
-.art-card:hover img {
-    filter: grayscale(0%); /* Full color on hover */
-}
-
-.art-info {
-    position: absolute;
-    /* Move it lower so it clears the image completely */
-    bottom: -4rem; 
-    left: 0;
-    display: flex;
-    flex-direction: column; /* Stack Number and Title vertically like the image */
-    align-items: flex-start;
-    gap: 0.5rem;
-    width: 100%;
-}
-
-.art-info span {
-    font-size: 0.75rem;
-    color: var(--color-text); /* Black text, not gold */
-    font-family: var(--font-sans);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    opacity: 0.6;
-}
-
-.art-info h3 {
-    font-family: var(--font-serif);
-    font-size: 1.75rem; /* Larger, more elegant */
-    color: var(--color-text);
-    font-style: italic; /* Matches the 'Modern Living' vibe */
-    margin: 0;
-}
-/* =========================================
-   7. CONCIERGE MODAL
-   ========================================= */
-.concierge-panel {
-    position: fixed; 
-    top: 0; 
-    right: 0; 
-    bottom: 0;
-    width: 100%; 
     max-width: 500px;
-    background-color: var(--color-text); 
-    color: var(--color-white);
-    z-index: 100; 
-    padding: 3rem;
-    display: flex; 
-    flex-direction: column; 
-    justify-content: space-between;
-    transform: translateX(100%);
-    transition: transform var(--transition-speed) var(--transition-curve);
-    box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+
+    /* Slide Up Animation */
+    transform: translateY(50px);
+    transition: transform 0.4s ease;
 }
 
-.concierge-panel.open { transform: translateX(0); }
+.modal-overlay.active .modal-card {
+    transform: translateY(0);
+}
 
-.close-btn {
-    align-self: flex-end; 
-    background: none; 
+/* 3. The Close Button */
+.modal-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.5); 
+    font-size: 2rem;
     cursor: pointer;
-    transition: color 0.3s;
+    color: #D8D1CC;
+    line-height: 1;
 }
-.close-btn:hover { color: var(--color-white); }
 
-.panel-subtitle {
-    color: var(--color-accent); 
+/* 4. Form Styling (Minimalist) */
+.form-group {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.form-group label {
+    font-family: var(--font-sans);
     font-size: 0.75rem;
-    letter-spacing: 0.2em; 
     text-transform: uppercase;
-    display: block; 
-    margin-bottom: 1rem;
-}
-.panel-title { 
-    font-family: var(--font-serif); 
-    font-size: 2.5rem; 
-    margin-bottom: 2rem; 
-}
-.panel-desc { 
-    color: rgba(255, 255, 255, 0.6); 
-    line-height: 1.6; 
-    margin-bottom: 3rem; 
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+    color: var(--color-soft);
 }
 
-.concierge-form input {
-    width: 100%; 
-    background: transparent; 
+.form-group input,
+.form-group select {
+    background: transparent;
     border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 1rem 0; 
-    color: var(--color-white); 
-    margin-bottom: 1.5rem;
-    font-family: var(--font-sans); 
-    outline: none; 
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 0.5rem 0;
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    color: var(--color-text);
+    outline: none;
     transition: border-color 0.3s;
-}
-.concierge-form input:focus { border-color: var(--color-accent); }
-
-.concierge-form button {
-    width: 100%; 
-    background-color: var(--color-white);
-    color: var(--color-text); 
-    padding: 1rem; 
-    border: none;
-    text-transform: uppercase; 
-    letter-spacing: 0.2em;
-    font-size: 0.75rem; 
-    cursor: pointer; 
-    margin-top: 1rem;
-    transition: background-color 0.3s;
-}
-.concierge-form button:hover { background-color: var(--color-accent); }
-
-.panel-footer { 
-    font-size: 0.75rem; 
-    color: rgba(255, 255, 255, 0.3); 
+    border-radius: 0;
+    /* Remove default rounded corners */
 }
 
-/* Overlay */
-.overlay {
-    position: fixed; 
-    inset: 0; 
-    background-color: var(--color-overlay);
-    z-index: 90; 
-    opacity: 0; 
-    pointer-events: none;
-    transition: opacity var(--transition-speed); backdrop-filter: blur(4px);
+.form-group input:focus,
+.form-group select:focus {
+    border-bottom-color: var(--color-accent);
 }
-.overlay.active { opacity: 1; pointer-events: auto; }
